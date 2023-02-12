@@ -1,0 +1,75 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+Parameters:
+  CERTIFICATE_ARN:
+    Type: String
+    Description: ARN of the certificate for the API Gateway Custom Domain
+
+Resources:
+  VisitorCountTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: visitorCount
+      AttributeDefinitions:
+        - AttributeName: visitorCount
+          AttributeType: N
+      KeySchema:
+        - AttributeName: visitorCount
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+
+  VisitorCountFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: visitor_count.lambda_handler
+      Runtime: python3.8
+      CodeUri: .
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref VisitorCountTable
+      Pipelines:
+        Requirements: requirements.txt
+      Events:
+        VisitorCountAPI:
+          Type: Api
+          Properties:
+            Path: /visitor-count
+            Method: get
+
+  VisitorCountAPI:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: prod
+      DefinitionBody:
+        swagger: '2.0'
+        paths:
+          /visitor-count:
+            get:
+              x-amazon-apigateway-integration:
+                type: aws_proxy
+                httpMethod: POST
+                uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${VisitorCountFunction.Arn}/invocations"
+
+  CustomDomain:
+    Type: AWS::ApiGateway::DomainName
+    Properties:
+      DomainName: !Ref "AWS::DomainName"
+      CertificateArn: !Ref CERTIFICATE_ARN
+      EndpointConfiguration:
+        Types:
+          - REGIONAL
+
+  BasePathMapping:
+    Type: AWS::ApiGateway::BasePathMapping
+    Properties:
+      DomainName: !Ref CustomDomain
+      RestApiId: !Ref VisitorCountAPI
+      Stage: !Ref "AWS::Stage"
+
+Outputs:
+  APIURL:
+    Description: URL of the API Gateway
+    Value: !Sub "https://${CustomDomain}/${AWS::Stage}"

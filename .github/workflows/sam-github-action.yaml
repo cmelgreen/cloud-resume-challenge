@@ -1,0 +1,52 @@
+on:
+  push:
+    paths:
+      - backend/**
+
+jobs:
+  build-deploy:
+    defaults:
+      run:
+        working-directory: ./backend
+        
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Get Environment Variables
+      id: dotenv
+      uses: falti/dotenv-action@v1.0.2
+      with:
+        dotenv-file: ../terraform/project.auto.tfvars
+
+    - name: Setup Python
+      uses: actions/setup-python@v2
+
+    - name: Setup SAM
+      uses: aws-actions/setup-sam@v1
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ steps.dotenv.outputs.AWS_REGION }}
+        aws-region: ${{ steps.dotenv.outputs.AWS_REGION }}
+
+    - name: Build SAM stack
+      run: sam build --use-container
+
+    - name: Install dependencies
+      uses: python
+      run: |
+        pip install -r requirements.txt
+
+    - name: Run tests
+      uses: python
+      env:
+        AWS_REGION: ${{ steps.dotenv.outputs.AWS_REGION }}
+      with:
+        args: pytest test_lambda_handler.py
+
+    - name: Deploy SAM stack
+      run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --stack-name ${{ steps.dotenv.outputs.PROJECT_NAME }} --region ${{ steps.dotenv.outputs.AWS_REGION }} 
+

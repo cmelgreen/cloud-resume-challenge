@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Cooper Melgreen</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" type="text/css" href="styles.css" /> 
+  </head>
+  <body>
+    <header>
+        <h1>Cooper Melgreen</h1>
+        <a href="mailto:cmelgreen@gmail.com">cmelgreen@gmail.com</a>
+        <p>Chicago, IL</p>
+        <p>
+          <a href="https://linkedin.com/in/cmelgreen">LinkedIn</a> |
+          <a href="https://github.com/cmelgreen">Github</a>
+        </p>
+    </header>
+    <main>
+      <section>
+        <h2>Profile</h2>
+        <p>Successful Enterprise Sales Executive with a strong technical background, proven leadership experience, and a track record of success in the SaaS space. Achieved 103% performance as a Solution Engineer at HashiCorp and established new markets as a Sales Executive at Greenbyte and Mindbreeze.</p>
+      </section>
+
+      <section>
+        <h2>Experience</h2>
+        <h3>HashiCorp - Solution Engineer</h3>
+        <h3>Mindbreeze - Sales Engineer</h3>
+        <h3>Greenbyte - Sales Executive</h3>
+      </section>
+
+      <section>
+        <h2>Skills</h2>
+        <ul>
+          <li>Hey, I built this in a day!</li>
+        </ul>
+      </section>
+    </main>
+  </body>
+  <footer>
+    <h3 id="visitor-count"/>
+    <script>
+      const visitorCountDisplay = document.getElementById("visitor-count");
+      
+      // Function to make GET request to API endpoint to retrieve number of visitors
+      function getVisitorCount() {
+        // API endpoint URL
+        const apiUrl = "https://cloud-resume-api.cmelgreen.com/visitor-count";
+      
+        // Make GET request to API endpoint
+        fetch(apiUrl)
+          .then(response => response.json())
+          .then(data => {
+            // Update visitor count display with retrieved number of visitors
+            visitorCountDisplay.innerHTML = `Visitor Count: ${data.visitorCount}`;
+          })
+          .catch(error => {
+            // Handle any errors
+            console.error(error);
+            visitorCountDisplay.innerHTML = "Error retrieving visitor count";
+          });
+      }
+      </script>
+  </footer>
+</html>

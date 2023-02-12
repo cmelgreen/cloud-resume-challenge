@@ -1,0 +1,33 @@
+on:
+  push:
+    paths:
+      - frontend/**
+
+jobs:
+  deploy:
+    name: Deploy Lambda Functions
+    runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Get Environment Variables
+      id: dotenv
+      uses: falti/dotenv-action@v1.0.2
+      with:
+        dotenv-file: ../terraform/project.auto.tfvars
+
+    - name: Assume Lambda Admin Role
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ steps.dotenv.outputs.PROJECT_NAME }}
+        aws-region: us-east-1
+
+    - name: Upload frontend
+      run: |
+        aws s3 sync ./frontend s3://${{ steps.dotenv.outputs.PROJECT_OWNER }}-${{ steps.dotenv.outputs.PROJECT_NAME}}/frontend 
