@@ -22,6 +22,26 @@ resource "aws_s3_bucket" "cloud_resume" {
 POLICY
 }
 
+resource "aws_s3_bucket" "cloud_resume_validation" {
+  bucket = "cloud-resume.cmelgreen.com"
+
+  acl    = "public-read"
+  policy = <<POLICY
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "PublicReadGetObject",
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::${var.PROJECT_OWNER}-${var.PROJECT_NAME}/*"
+        }
+    ]
+}
+POLICY
+}
+
 resource "aws_s3_bucket_website_configuration" "cloud_resume" {
   bucket = aws_s3_bucket.cloud_resume.bucket
 
@@ -111,7 +131,7 @@ resource "aws_route53_record" "cloud_resume" {
   allow_overwrite = true
   type            = "CNAME"
   ttl             = "300"
-  records         = [aws_s3_bucket_website_configuration.cloud_resume.website_endpoint]
+  records         = [aws_s3_bucket_website_configuration.cloud_resume_validation.website_endpoint]
 }
 
 resource "aws_acm_certificate_validation" "cloud_resume" {
