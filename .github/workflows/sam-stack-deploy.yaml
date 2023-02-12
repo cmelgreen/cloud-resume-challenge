@@ -2,6 +2,7 @@ on:
   push:
     paths:
       - backend/**
+      - .github/workflows/sam-stack-deploy.yaml
 
 jobs:
   build-deploy:
