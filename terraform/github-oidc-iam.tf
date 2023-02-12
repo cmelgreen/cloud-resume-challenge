@@ -1,3 +1,7 @@
+data "aws_iam_openid_connect_provider" "github" {
+  url = "https://token.actions.githubusercontent.com"
+}
+
 resource "aws_iam_role" "cloud_resume_github_actions" {
   name = var.PROJECT_NAME
 
@@ -8,7 +12,7 @@ resource "aws_iam_role" "cloud_resume_github_actions" {
         Action = "sts:AssumeRoleWithWebIdentity"
         Effect = "Allow"
         Principal = {
-          Federated = aws_iam_openid_connect_provider.github.arn
+          Federated = data.aws_iam_openid_connect_provider.github.arn
         }
         Condition = {
             StringEquals = {
