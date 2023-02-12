@@ -34,37 +34,6 @@ resource "aws_s3_bucket_website_configuration" "cloud_resume" {
   }
 }
 
-resource "aws_s3_bucket" "cloud_resume_validation" {
-  bucket = "cloud-resume.cmelgreen.com"
-
-  policy = <<POLICY
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Sid": "PublicReadGetObject",
-            "Effect": "Allow",
-            "Principal": "*",
-            "Action": "s3:GetObject",
-            "Resource": "arn:aws:s3:::cloud-resume.cmelgreen.com/*"
-        }
-    ]
-}
-POLICY
-}
-
-resource "aws_s3_bucket_website_configuration" "cloud_resume_validation" {
-  bucket = aws_s3_bucket.cloud_resume_validation.bucket
-
-  index_document {
-    suffix = "index.html"
-  }
-
-  error_document {
-    key = "error.html"
-  }
-}
-
 locals {
   frontend_uri = "${var.PROJECT_NAME}.${var.DOMAIN}"
   backend_uri  = "${var.PROJECT_NAME}-api.${var.DOMAIN}"
