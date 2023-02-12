@@ -22,7 +22,7 @@ data "aws_route53_zone" "domain" {
   name         = var.DOMAIN
 }
 
-resource "aws_route53_record" {
+resource "aws_route53_record" "cloud_resume_route53" {
   zone_id = data.aws_route53_zone.domain.zone_id
   name    = "${var.PROJECT_NAME}.${var.DOMAIN}"
   type    = "CNAME"
