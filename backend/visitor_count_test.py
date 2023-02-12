@@ -1,10 +1,10 @@
 import unittest
 import boto3
-from moto import mock_dynamodb2
+from moto import mock_dynamodb
 
 TABLE = "visitorCount"
 
-@mock_dynamodb2
+@mock_dynamodb
 class TestLambdaFunction(unittest.TestCase):
     def setUp(self):
         self.dynamodb = boto3.client('dynamodb')
