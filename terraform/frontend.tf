@@ -40,7 +40,7 @@ locals {
 }
 
 resource "aws_acm_certificate" "cloud_resume" {
-  domain_name               = locL.frontend_uri
+  domain_name               = local.frontend_uri
   validation_method         = "DNS"
 
   lifecycle {
