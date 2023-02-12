@@ -52,7 +52,7 @@ resource "aws_cloudfront_distribution" "cloud_resume" {
   }
 
   viewer_certificate {
-    acm_certificate_arn            = data.aws_acm_certificate.issued
+    acm_certificate_arn            = data.aws_acm_certificate.issued.arn
     cloudfront_default_certificate = false
     minimum_protocol_version       = "TLSv1.2_2019"
     ssl_support_method             = "sni-only"
