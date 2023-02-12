@@ -72,7 +72,7 @@ resource "aws_iam_role_policy_attachment" "cloud_resume_apigateway" {
 
 resource "aws_iam_role_policy_attachment" "cloud_resume_s3" {
   role       = aws_iam_role.cloud_resume_github_actions.name
-  policy_arn = data.aws_iam_policy.iam_full_access.arn
+  policy_arn = data.aws_iam_policy.s3_full_access.arn
 }
 
 resource "aws_iam_role_policy_attachment" "cloud_resume_dynamodb" {
