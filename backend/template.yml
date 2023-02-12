@@ -51,11 +51,11 @@ Resources:
                 httpMethod: POST
                 uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${VisitorCountFunction.Arn}/invocations"
 
-  CustomDomain:
+  DomainConfiguration:
     Type: AWS::ApiGateway::DomainName
     Properties:
       DomainName: "cloud-resume-api.cmelgreen.com"
-      RegionalCertificateArn: !Ref CertificateArn
+      CertificateArn: !Ref CertificateArn
 
   BasePathMapping:
     Type: AWS::ApiGateway::BasePathMapping
