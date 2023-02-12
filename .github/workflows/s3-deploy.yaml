@@ -24,9 +24,9 @@ jobs:
         path: ./terraform/project.auto.tfvars
 
     - name: Check vars
-        run: |
-          echo ${{ steps.dotenv.outputs.PROJECT_NAME }}
-          echo ${{ steps.dotenv.outputs.AWS_REGION }}
+      run: |
+        echo ${{ steps.dotenv.outputs.PROJECT_NAME }}
+        echo ${{ steps.dotenv.outputs.AWS_REGION }}
 
     - name: Assume Lambda Admin Role
       uses: aws-actions/configure-aws-credentials@v1
