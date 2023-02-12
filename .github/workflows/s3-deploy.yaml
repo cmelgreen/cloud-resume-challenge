@@ -23,11 +23,16 @@ jobs:
       with:
         path: ./terraform/project.auto.tfvars
 
+    - name: Check vars
+        run: |
+          echo ${{ steps.dotenv.outputs.PROJECT_NAME }}
+          echo ${{ steps.dotenv.outputs.AWS_REGION }}
+
     - name: Assume Lambda Admin Role
       uses: aws-actions/configure-aws-credentials@v1
       with:
         role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ steps.dotenv.outputs.PROJECT_NAME }}
-        aws-region: us-east-1
+        aws-region: ${{ steps.dotenv.outputs.AWS_REGION }}
 
     - name: Upload frontend
       run: |
