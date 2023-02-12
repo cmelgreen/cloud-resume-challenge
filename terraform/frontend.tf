@@ -35,7 +35,7 @@ locals {
 
 resource "aws_acm_certificate" "cloud_resume" {
   domain_name       = var.DOMAIN
-  subject_alternative_names = ["*.${var.DOMAIN}"]
+  subject_alternative_names = [local.frontend_uri, local.backend_uri]
   validation_method = "DNS"
 
   lifecycle {
@@ -105,7 +105,7 @@ resource "aws_route53_record" "cloud_resume" {
   name    = local.frontend_uri
   type    = "CNAME"
   ttl     = "300"
-  records = [aws_s3_bucket.cloud_resume.bucket_domain_name]
+  records = [aws.s3_bucket.cloud_resume.website_domain ]
 }
 
 resource "aws_acm_certificate_validation" "cloud_resume" {
