@@ -137,7 +137,6 @@ resource "aws_route53_record" "cloud_resume" {
   name            = local.frontend_uri
   allow_overwrite = true
   type            = "CNAME"
-  ttl             = "300"
 
   alias {
     name                   = aws_cloudfront_distribution.cloud_resume.domain_name
