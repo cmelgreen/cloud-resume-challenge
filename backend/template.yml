@@ -15,7 +15,7 @@ Resources:
         - AttributeName: visitorCount
           AttributeType: N
       KeySchema:
-        - AttributeName: visitorCount
+        - AttributeName: id
           KeyType: HASH
       ProvisionedThroughput:
         ReadCapacityUnits: 1

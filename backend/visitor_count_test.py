@@ -12,7 +12,7 @@ class TestLambdaFunction(unittest.TestCase):
             self.table = self.dynamodb.create_table(
                 TableName=TABLE,
                 KeySchema=[
-                    {'KeyType': 'HASH', 'AttributeName': 'visitorCount'}
+                    {'KeyType': 'HASH', 'AttributeName': 'id'}
                 ],
                 AttributeDefinitions=[
                     {'AttributeName': 'visitorCount', 'AttributeType': 'N'}
