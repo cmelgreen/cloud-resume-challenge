@@ -22,7 +22,7 @@ resource "aws_s3_bucket" "cloud_resume" {
 POLICY
 }
 
-resource "aws_s3_bucket_website_configuration" "example" {
+resource "aws_s3_bucket_website_configuration" "cloud_resume" {
   bucket = aws_s3_bucket.cloud_resume.bucket
 
   index_document {
