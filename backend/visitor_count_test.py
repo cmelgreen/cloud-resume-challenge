@@ -30,7 +30,7 @@ class TestLambdaFunction(unittest.TestCase):
 
         result = lambda_handler(None, None)
 
-        assert result.StatusCode == 200
+        assert result['StatusCode'] == 200
 
 if __name__ == '__main__':
     unittest.main()
