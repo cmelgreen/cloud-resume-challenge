@@ -65,9 +65,9 @@ Resources:
     Properties:
       DomainName: !Ref CustomDomain
       RestApiId: !Ref VisitorCountAPI
-      Stage: !Ref "AWS::Stage"
+      Stage: prod
 
 Outputs:
   APIURL:
     Description: URL of the API Gateway
-    Value: !Sub "https://${CustomDomain}/${AWS::Stage}"
+    Value: !Sub "https://${CustomDomain}/prod"
