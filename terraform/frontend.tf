@@ -71,8 +71,8 @@ locals {
 }
 
 resource "aws_acm_certificate" "cloud_resume" {
-  domain_name               = local.frontend_uri
-  validation_method         = "DNS"
+  domain_name       = local.frontend_uri
+  validation_method = "DNS"
 
   lifecycle {
     create_before_destroy = true
@@ -137,6 +137,7 @@ resource "aws_route53_record" "cloud_resume" {
   name            = local.frontend_uri
   allow_overwrite = true
   type            = "CNAME"
+  ttl             = 300
 
   records = [aws_cloudfront_distribution.cloud_resume.domain_name]
 }
