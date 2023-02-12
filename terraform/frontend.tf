@@ -96,7 +96,7 @@ data "aws_route53_zone" "domain" {
   name = var.DOMAIN
 }
 
-resource "aws_route53_record" "cloud_resume_" {
+resource "aws_route53_record" "cloud_resume" {
   zone_id = data.aws_route53_zone.domain.zone_id
   name    = local.frontend_uri
   type    = "CNAME"
@@ -105,6 +105,6 @@ resource "aws_route53_record" "cloud_resume_" {
 }
 
 resource "aws_acm_certificate_validation" "cloud_resmume" {
-  certificate_arn         = aws_acm_certificate.cloud_region.arn
-  validation_record_fqdns = [aws_route53_record.cloud_resume.fqdn]
+  certificate_arn         = aws_acm_certificate.cloud_resume.arn
+  validation_record_fqdns = [aws_route53_record.cloud_resmume.fqdn]
 }
