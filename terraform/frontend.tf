@@ -8,8 +8,11 @@ resource "aws_s3_bucket" "cloud_resume" {
 
 module "aws_cloudfront_distribution" {
   source              = "terraform-aws-modules/cloudfront/aws"
-  origin_id           = aws_s3_bucket.cloud_resume.name
-  origin_domain_name  = aws_s3_bucket.cloud_resume.bucket_domain_name
+  origin = {
+    origin_id           = aws_s3_bucket.cloud_resume.name
+    domain_name  = aws_s3_bucket.cloud_resume.bucket_domain_name
+  }
+
   default_root_object = var.DEFAULT_ROOT_OBJECT
   aliases             = ["${var.PROJECT_NAME}.${var.DOMAIN}"]
 }
