@@ -138,10 +138,5 @@ resource "aws_route53_record" "cloud_resume" {
   allow_overwrite = true
   type            = "CNAME"
 
-  alias {
-    name                   = aws_cloudfront_distribution.cloud_resume.domain_name
-    zone_id                = aws_cloudfront_distribution.cloud_resume.hosted_zone_id
-    evaluate_target_health = false
-  }
-
+  records = [aws_cloudfront_distribution.cloud_resume.domain_name]
 }
