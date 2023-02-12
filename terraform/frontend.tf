@@ -3,10 +3,10 @@ provider "aws" {
 }
 
 resource "aws_s3_bucket" "cloud_resume" {
-  bucket = "${var.TF}-${var.PROJECT_NAME}"
+  bucket = "${var.PROJECT_OWNER}-${var.PROJECT_NAME}"
 }
 
-module "aws_cloudfront_distribution" {
+module "cloudfront_distribution" {
   source              = "terraform-aws-modules/cloudfront/aws"
   origin = {
     origin_id           = aws_s3_bucket.cloud_resume.name
@@ -18,7 +18,7 @@ module "aws_cloudfront_distribution" {
 }
 
 data "aws_api_gateway_rest_api" "api" {
-  name = var.PROJET_NAME
+  name = var.PROJECT_NAME
 }
 
 data "aws_route53_zone" "domain" {

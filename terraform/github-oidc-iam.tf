@@ -25,7 +25,7 @@ resource "aws_iam_role" "cloud_resume_github_actions" {
                 "token.actions.githubusercontent.com:aud": "sts.amazonaws.com"
             }
             StringLike = {
-                "token.actions.githubusercontent.com:sub": "repo:${var.GITHUB_ORG}/*:*"
+                "token.actions.githubusercontent.com:sub": "repo:${var.PROJECT_OWNER}/*:*"
             }
         }
       },

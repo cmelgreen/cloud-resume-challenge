@@ -8,14 +8,14 @@ variable "PROJECT_NAME" {
 
 variable "PROJECT_OWNER" {
     type = string
-    description = ""
+    description = "Github org running the project"
 }
 
 variable "DOMAIN" {
     type = string
 }
 
-variable "DEFAULT_ROOT_OBJET" {
+variable "DEFAULT_ROOT_OBJECT" {
     type = string
     default = "index.html"
 }
