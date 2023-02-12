@@ -55,7 +55,7 @@ Resources:
     Type: AWS::ApiGateway::DomainName
     Properties:
       DomainName: "cloud-resume-api.cmelgreen.yaml"
-      CertificateArn: !Ref CertificateArn
+      RegionalCertificateArn: !Ref CertificateArn
       EndpointConfiguration:
         Types:
           - REGIONAL
