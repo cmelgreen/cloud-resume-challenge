@@ -93,5 +93,5 @@ resource "aws_iam_role_policy_attachment" "cloud_resume_route53" {
 
 resource "aws_iam_role_policy_attachment" "cloud_resume_cloudformation" {
   role       = aws_iam_role.cloud_resume_github_actions.name
-  policy_arn = data.aws_iam_policy.cloudformation_full_access
+  policy_arn = data.aws_iam_policy.cloudformation_full_access.arn
 }

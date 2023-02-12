@@ -60,10 +60,6 @@ resource "aws_cloudfront_distribution" "cloud_resume" {
 
 }
 
-data "aws_api_gateway_rest_api" "api" {
-  name = var.PROJECT_NAME
-}
-
 data "aws_route53_zone" "domain" {
   name         = var.DOMAIN
 }
