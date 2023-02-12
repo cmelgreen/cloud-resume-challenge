@@ -1,45 +1,36 @@
-import boto3
-import json
 import unittest
+import boto3
 from moto import mock_dynamodb2
 
-def test_lambda_handler(self):
-    # Start a mock DynamoDB instance
-    mock = mock_dynamodb2()
-    mock.start()
+TABLE = "visitorCount"
 
-    # Create a test DynamoDB table
-    dynamodb = boto3.client('dynamodb')
-    table_name = 'test_table'
-    dynamodb.create_table(
-        TableName=table_name,
-        KeySchema=[
-            {
-                'AttributeName': 'id',
-                'KeyType': 'HASH'
-            }
-        ],
-        AttributeDefinitions=[
-            {
-                'AttributeName': 'id',
-                'AttributeType': 'S'
-            }
-        ],
-        ProvisionedThroughput={
-            'ReadCapacityUnits': 5,
-            'WriteCapacityUnits': 5
-        }
-    )
+@mock_dynamodb2
+class TestLambdaFunction(unittest.TestCase):
+    def setUp(self):
+        self.dynamodb = boto3.client('dynamodb')
+        try:
+            self.table = self.dynamodb.create_table(
+                TableName=TABLE,
+                KeySchema=[
+                    {'KeyType': 'HASH', 'AttributeName': 'visitorCount'}
+                ],
+                AttributeDefinitions=[
+                    {'AttributeName': 'visitorCount', 'AttributeType': 'N'}
+                ],
+                ProvisionedThroughput={
+                    'ReadCapacityUnits': 1,
+                    'WriteCapacityUnits': 1
+                }
+            )
+        except self.dynamodb.exceptions.ResourceInUseException:
+            self.table = boto3.resource('dynamodb').Table(TABLE)
 
-    # Run the Lambda function under test
-    from visitor_count import lambda_handler
-    response = lambda_handler(None, None)
+    def test_handler(self):
+        from visitor_count import lambda_handler
 
-    # Verify the response of the Lambda function
-    self.assertEqual(response['statusCode'], 200)
+        result = lambda_handler(None, None)
 
-    # Stop the mock DynamoDB instance
-    mock.stop()
+        assert result.StatusCode == 200
 
 if __name__ == '__main__':
     unittest.main()
