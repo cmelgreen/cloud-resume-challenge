@@ -115,6 +115,10 @@ resource "aws_route53_record" "cloud_resume" {
   records         = [aws_s3_bucket_website_configuration.cloud_resume.website_domain]
 }
 
+output "s3_endpoint" {
+  value = aws_s3_bucket_website_configuration.cloud_resume
+}
+
 resource "aws_acm_certificate_validation" "cloud_resume" {
   certificate_arn         = aws_acm_certificate.cloud_resume.arn
   validation_record_fqdns = [aws_route53_record.cloud_resume.fqdn]
