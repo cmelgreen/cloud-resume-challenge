@@ -13,15 +13,14 @@ data "aws_acm_certificate" "issued" {
 
 resource "aws_cloudfront_distribution" "cloud_resume" {
   origin {
-    origin_id           = aws_s3_bucket.cloud_resume.bucket
-    domain_name  = aws_s3_bucket.cloud_resume.bucket_domain_name
+    origin_id   = aws_s3_bucket.cloud_resume.bucket
+    domain_name = aws_s3_bucket.cloud_resume.bucket_domain_name
   }
 
   default_root_object = var.DEFAULT_ROOT_OBJECT
-  aliases             = ["${var.PROJECT_NAME}.${var.DOMAIN}"]
 
-  enabled             = true
-  is_ipv6_enabled     = true
+  enabled         = true
+  is_ipv6_enabled = true
 
   default_cache_behavior {
     allowed_methods  = ["GET", "HEAD"]
@@ -61,7 +60,7 @@ resource "aws_cloudfront_distribution" "cloud_resume" {
 }
 
 data "aws_route53_zone" "domain" {
-  name         = var.DOMAIN
+  name = var.DOMAIN
 }
 
 resource "aws_route53_record" "cloud_resume_route53" {
