@@ -54,7 +54,7 @@ Resources:
   CustomDomain:
     Type: AWS::ApiGateway::DomainName
     Properties:
-      DomainName: !Ref "AWS::DomainName"
+      DomainName: "cloud-resume-api.cmelgreen.yaml"
       CertificateArn: !Ref CertificateArn
       EndpointConfiguration:
         Types:
