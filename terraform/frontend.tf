@@ -126,10 +126,6 @@ resource "aws_cloudfront_distribution" "cloud_resume" {
     minimum_protocol_version       = "TLSv1.2_2019"
     ssl_support_method             = "sni-only"
   }
-
-  depends_on =[
-    aws_acm_certificate_validation.cloud_resume
-  ]
 }
 
 data "aws_route53_zone" "domain" {
