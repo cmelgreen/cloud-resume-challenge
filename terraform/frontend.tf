@@ -9,7 +9,7 @@ resource "aws_s3_bucket" "cloud_resume" {
 module "cloudfront_distribution" {
   source              = "terraform-aws-modules/cloudfront/aws"
   origin = {
-    origin_id           = aws_s3_bucket.cloud_resume.name
+    origin_id           = aws_s3_bucket.cloud_resume.bucket
     domain_name  = aws_s3_bucket.cloud_resume.bucket_domain_name
   }
 
@@ -30,5 +30,5 @@ resource "aws_route53_record" "cloud_resume_route53" {
   name    = "${var.PROJECT_NAME}.${var.DOMAIN}"
   type    = "CNAME"
   ttl     = "300"
-  records = [module.cloudfront_distribution.domain_name]
+  records = [module.cloudfront_distribution.cloudfront_distribution_domain_name]
 }
