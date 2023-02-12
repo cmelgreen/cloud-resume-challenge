@@ -14,12 +14,12 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-
+      
     - name: Get Environment Variables
       id: dotenv
       uses: falti/dotenv-action@v1.0.2
       with:
-        dotenv-file: ../terraform/project.auto.tfvars
+        path: ../terraform/project.auto.tfvars
 
     - name: Setup Python
       uses: actions/setup-python@v2
