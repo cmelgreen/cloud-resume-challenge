@@ -102,20 +102,20 @@ resource "aws_acm_certificate" "cloud_resume" {
 #   ]
 # }
 
-# data "aws_route53_zone" "domain" {
-#   name = var.DOMAIN
-# }
+data "aws_route53_zone" "domain" {
+  name = var.DOMAIN
+}
 
-# resource "aws_route53_record" "cloud_resume" {
-#   zone_id         = data.aws_route53_zone.domain.zone_id
-#   name            = local.frontend_uri
-#   allow_overwrite = true
-#   type            = "CNAME"
-#   ttl             = "300"
-#   records         = [aws_s3_bucket_website_configuration.cloud_resume.website_domain]
-# }
+resource "aws_route53_record" "cloud_resume" {
+  zone_id         = data.aws_route53_zone.domain.zone_id
+  name            = local.frontend_uri
+  allow_overwrite = true
+  type            = "CNAME"
+  ttl             = "300"
+  records         = [aws_s3_bucket_website_configuration.cloud_resume.website_domain]
+}
 
-# resource "aws_acm_certificate_validation" "cloud_resume" {
-#   certificate_arn         = aws_acm_certificate.cloud_resume.arn
-#   validation_record_fqdns = [aws_route53_record.cloud_resume.fqdn]
-# }
+resource "aws_acm_certificate_validation" "cloud_resume" {
+  certificate_arn         = aws_acm_certificate.cloud_resume.arn
+  validation_record_fqdns = [aws_route53_record.cloud_resume.fqdn]
+}
