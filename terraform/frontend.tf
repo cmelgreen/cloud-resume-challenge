@@ -28,9 +28,19 @@ POLICY
 
 }
 
-data "aws_acm_certificate" "issued" {
-  domain   = var.DOMAIN
-  statuses = ["ISSUED"]
+locals {
+  frontend_uri = "${var.PROJECT_NAME}.${var.DOMAIN}"
+  backend_uri = "${var.PROJECT_NAME}-api.${var.DOMAIN}"
+}
+
+resource "aws_acm_certificate" "cloud_resume" {
+  domain_name       = var.DOMAIN
+  subject_alternative_names = [local.frontend_uri, local.backend_uri]
+  validation_method = "DNS"
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_cloudfront_distribution" "cloud_resume" {
@@ -43,6 +53,8 @@ resource "aws_cloudfront_distribution" "cloud_resume" {
 
   enabled         = true
   is_ipv6_enabled = true
+
+  aliases = [local.frontend_uri]
 
   default_cache_behavior {
     allowed_methods  = ["GET", "HEAD"]
@@ -73,22 +85,26 @@ resource "aws_cloudfront_distribution" "cloud_resume" {
   }
 
   viewer_certificate {
-    acm_certificate_arn            = data.aws_acm_certificate.issued.arn
+    acm_certificate_arn            = aws_acm_certificate.cloud_resume.arn
     cloudfront_default_certificate = false
     minimum_protocol_version       = "TLSv1.2_2019"
     ssl_support_method             = "sni-only"
   }
-
 }
 
 data "aws_route53_zone" "domain" {
   name = var.DOMAIN
 }
 
-resource "aws_route53_record" "cloud_resume_route53" {
+resource "aws_route53_record" "cloud_resume_" {
   zone_id = data.aws_route53_zone.domain.zone_id
-  name    = "${var.PROJECT_NAME}.${var.DOMAIN}"
+  name    = local.frontend_uri
   type    = "CNAME"
   ttl     = "300"
   records = [aws_cloudfront_distribution.cloud_resume.domain_name]
+}
+
+resource "aws_acm_certificate_validation" "cloud_resmume" {
+  certificate_arn         = aws_acm_certificate.cloud_region.arn
+  validation_record_fqdns = [aws_route53_record.cloud_resume.fqdn]
 }
