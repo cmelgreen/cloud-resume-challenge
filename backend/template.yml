@@ -12,7 +12,7 @@ Resources:
     Properties:
       TableName: visitorCount
       AttributeDefinitions:
-        - AttributeName: visitorCount
+        - AttributeName: id
           AttributeType: N
       KeySchema:
         - AttributeName: id
@@ -54,11 +54,8 @@ Resources:
   CustomDomain:
     Type: AWS::ApiGateway::DomainName
     Properties:
-      DomainName: "cloud-resume-api.cmelgreen.yaml"
+      DomainName: "cloud-resume-api.cmelgreen.com"
       RegionalCertificateArn: !Ref CertificateArn
-      EndpointConfiguration:
-        Types:
-          - REGIONAL
 
   BasePathMapping:
     Type: AWS::ApiGateway::BasePathMapping
