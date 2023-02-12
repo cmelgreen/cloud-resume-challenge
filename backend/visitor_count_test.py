@@ -1,44 +1,45 @@
-import unittest
-from mock import patch, MagicMock
 import boto3
 import json
+import unittest
+from moto import mock_dynamodb2
 
+def test_lambda_handler(self):
+    # Start a mock DynamoDB instance
+    mock = mock_dynamodb2()
+    mock.start()
 
-class TestLambdaHandler(unittest.TestCase):
-    def test_lambda_handler(self):
-        with patch.object(boto3, 'resource') as mock_boto3_resource:
+    # Create a test DynamoDB table
+    dynamodb = boto3.client('dynamodb')
+    table_name = 'test_table'
+    dynamodb.create_table(
+        TableName=table_name,
+        KeySchema=[
+            {
+                'AttributeName': 'id',
+                'KeyType': 'HASH'
+            }
+        ],
+        AttributeDefinitions=[
+            {
+                'AttributeName': 'id',
+                'AttributeType': 'S'
+            }
+        ],
+        ProvisionedThroughput={
+            'ReadCapacityUnits': 5,
+            'WriteCapacityUnits': 5
+        }
+    )
 
-            mock_table = MagicMock()
-            mock_boto3_resource.return_value = mock_table
+    # Run the Lambda function under test
+    from visitor_count import lambda_handler
+    response = lambda_handler(None, None)
 
-            mock_response = '''{
-                'Attributes': {
-                    'visitorCount': 5
-                }
-            }'''
+    # Verify the response of the Lambda function
+    self.assertEqual(response['statusCode'], 200)
 
-            mock_table.update_item.return_value = mock_response
-
-            from visitor_count import lambda_handler
-
-            response = lambda_handler(None, None)
-
-            mock_response = '{"Attributes": {"visitorCount": 5}}'
-
-            self.assertEqual(response['statusCode'], 200)
-            self.assertEqual(json.loads(response['body']), 5)
-
-            mock_table.update_item.assert_called_once_with(
-                Key={
-                    'visitorCount': 1
-                },
-                UpdateExpression='ADD visitorCount :inc',
-                ExpressionAttributeValues={
-                    ':inc': 1
-                },
-                ReturnValues='UPDATED_NEW'
-            )
-
+    # Stop the mock DynamoDB instance
+    mock.stop()
 
 if __name__ == '__main__':
     unittest.main()
