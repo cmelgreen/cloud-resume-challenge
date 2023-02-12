@@ -36,4 +36,4 @@ jobs:
 
     - name: Upload frontend
       run: |
-        aws s3 sync ./frontend s3://${{ steps.dotenv.outputs.PROJECT_OWNER }}-${{ steps.dotenv.outputs.PROJECT_NAME}}/frontend 
+        aws s3 sync ./frontend s3://${{ steps.dotenv.outputs.PROJECT_OWNER }}-${{ steps.dotenv.outputs.PROJECT_NAME}}
