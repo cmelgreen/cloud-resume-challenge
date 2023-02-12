@@ -21,7 +21,7 @@ jobs:
       id: dotenv
       uses: falti/dotenv-action@v1.0.2
       with:
-        path: ../../terraform/project.auto.tfvars
+        path: ./terraform/project.auto.tfvars
 
     - name: Assume Lambda Admin Role
       uses: aws-actions/configure-aws-credentials@v1
