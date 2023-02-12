@@ -36,26 +36,10 @@ resource "aws_s3_bucket_website_configuration" "cloud_resume" {
 
 resource "aws_s3_bucket" "cloud_resume_validation" {
   bucket = "cloud-resume.cmelgreen.com"
-
-  acl    = "public-read"
-  policy = <<POLICY
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Sid": "PublicReadGetObject",
-            "Effect": "Allow",
-            "Principal": "*",
-            "Action": "s3:GetObject",
-            "Resource": "arn:aws:s3:::${var.PROJECT_OWNER}-${var.PROJECT_NAME}/*"
-        }
-    ]
-}
-POLICY
 }
 
 resource "aws_s3_bucket_website_configuration" "cloud_resume_validation" {
-  bucket = aws_s3_bucket.cloud_resume.bucket
+  bucket = aws_s3_bucket.cloud_resume_validation.bucket
 
   index_document {
     suffix = "index.html"
