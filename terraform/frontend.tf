@@ -20,12 +20,18 @@ resource "aws_s3_bucket" "cloud_resume" {
     ]
 }
 POLICY
+}
 
-  website {
-    index_document = "index.html"
-    error_document = "error.html"
+resource "aws_s3_bucket_website_configuration" "example" {
+  bucket = aws_s3_bucket.cloud_resume.bucket
+
+  index_document {
+    suffix = "index.html"
   }
 
+  error_document {
+    key = "error.html"
+  }
 }
 
 locals {
@@ -103,9 +109,10 @@ data "aws_route53_zone" "domain" {
 resource "aws_route53_record" "cloud_resume" {
   zone_id = data.aws_route53_zone.domain.zone_id
   name    = local.frontend_uri
+  allow_overwrite = true
   type    = "CNAME"
   ttl     = "300"
-  records = [aws_s3_bucket.cloud_resume.website_domain ]
+  records = [aws_s3_bucket_website_configuration.cloud_resume.website_domain]
 }
 
 resource "aws_acm_certificate_validation" "cloud_resume" {
