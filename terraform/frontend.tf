@@ -34,37 +34,6 @@ resource "aws_s3_bucket_website_configuration" "cloud_resume" {
   }
 }
 
-resource "aws_s3_bucket" "cloud_resume_validation" {
-  bucket = "cloud-resume-api.cmelgreen.com"
-
-  policy = <<POLICY
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Sid": "PublicReadGetObject",
-            "Effect": "Allow",
-            "Principal": "*",
-            "Action": "s3:GetObject",
-            "Resource": "arn:aws:s3:::cloud-resume-api.cmelgreen.com/*"
-        }
-    ]
-}
-POLICY
-}
-
-resource "aws_s3_bucket_website_configuration" "cloud_resume_validation" {
-  bucket = aws_s3_bucket.cloud_resume_validation.bucket
-
-  index_document {
-    suffix = "index.html"
-  }
-
-  error_document {
-    key = "error.html"
-  }
-}
-
 locals {
   frontend_uri = "${var.PROJECT_NAME}.${var.DOMAIN}"
   backend_uri  = "${var.PROJECT_NAME}-api.${var.DOMAIN}"
@@ -78,15 +47,6 @@ resource "aws_acm_certificate" "cloud_resume" {
     create_before_destroy = true
   }
 }
-
-# resource "aws_acm_certificate" "cloud_resume" {
-#   domain_name       = local.backend_uri
-#   validation_method = "DNS"
-
-#   lifecycle {
-#     create_before_destroy = true
-#   }
-# }
 
 resource "aws_cloudfront_distribution" "cloud_resume" {
   origin {
