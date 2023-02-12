@@ -15,8 +15,7 @@ class TestLambdaFunction(unittest.TestCase):
                     {'KeyType': 'HASH', 'AttributeName': 'id'}
                 ],
                 AttributeDefinitions=[
-                    {'AttributeName': 'id', 'AttributeType': 'S'},
-                    {'AttributeName': 'visitorCount', 'AttributeType': 'N'}
+                    {'AttributeName': 'id', 'AttributeType': 'N'},
                 ],
                 ProvisionedThroughput={
                     'ReadCapacityUnits': 1,
