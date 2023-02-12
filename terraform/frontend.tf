@@ -22,6 +22,18 @@ resource "aws_s3_bucket" "cloud_resume" {
 POLICY
 }
 
+resource "aws_s3_bucket_website_configuration" "cloud_resume" {
+  bucket = aws_s3_bucket.cloud_resume.bucket
+
+  index_document {
+    suffix = "index.html"
+  }
+
+  error_document {
+    key = "error.html"
+  }
+}
+
 resource "aws_s3_bucket" "cloud_resume_validation" {
   bucket = "cloud-resume.cmelgreen.com"
 
@@ -42,7 +54,7 @@ resource "aws_s3_bucket" "cloud_resume_validation" {
 POLICY
 }
 
-resource "aws_s3_bucket_website_configuration" "cloud_resume" {
+resource "aws_s3_bucket_website_configuration" "cloud_resume_validation" {
   bucket = aws_s3_bucket.cloud_resume.bucket
 
   index_document {
@@ -68,58 +80,58 @@ resource "aws_acm_certificate" "cloud_resume" {
   }
 }
 
-resource "aws_cloudfront_distribution" "cloud_resume" {
-  origin {
-    origin_id   = aws_s3_bucket.cloud_resume.bucket
-    domain_name = aws_s3_bucket.cloud_resume.bucket_domain_name
-  }
+# resource "aws_cloudfront_distribution" "cloud_resume" {
+#   origin {
+#     origin_id   = aws_s3_bucket.cloud_resume.bucket
+#     domain_name = aws_s3_bucket.cloud_resume.bucket_domain_name
+#   }
 
-  default_root_object = var.DEFAULT_ROOT_OBJECT
+#   default_root_object = var.DEFAULT_ROOT_OBJECT
 
-  enabled         = true
-  is_ipv6_enabled = true
+#   enabled         = true
+#   is_ipv6_enabled = true
 
-  aliases = [local.frontend_uri]
+#   aliases = [local.frontend_uri]
 
-  default_cache_behavior {
-    allowed_methods  = ["GET", "HEAD"]
-    cached_methods   = ["GET", "HEAD"]
-    target_origin_id = aws_s3_bucket.cloud_resume.bucket
+#   default_cache_behavior {
+#     allowed_methods  = ["GET", "HEAD"]
+#     cached_methods   = ["GET", "HEAD"]
+#     target_origin_id = aws_s3_bucket.cloud_resume.bucket
 
-    forwarded_values {
-      query_string = false
+#     forwarded_values {
+#       query_string = false
 
-      cookies {
-        forward = "none"
-      }
-    }
+#       cookies {
+#         forward = "none"
+#       }
+#     }
 
-    viewer_protocol_policy = "redirect-to-https"
-    min_ttl                = 0
-    default_ttl            = 3600
-    max_ttl                = 86400
-  }
+#     viewer_protocol_policy = "redirect-to-https"
+#     min_ttl                = 0
+#     default_ttl            = 3600
+#     max_ttl                = 86400
+#   }
 
-  price_class = "PriceClass_100"
+#   price_class = "PriceClass_100"
 
-  restrictions {
-    geo_restriction {
-      restriction_type = "whitelist"
-      locations        = ["US", "CA"]
-    }
-  }
+#   restrictions {
+#     geo_restriction {
+#       restriction_type = "whitelist"
+#       locations        = ["US", "CA"]
+#     }
+#   }
 
-  viewer_certificate {
-    acm_certificate_arn            = aws_acm_certificate.cloud_resume.arn
-    cloudfront_default_certificate = false
-    minimum_protocol_version       = "TLSv1.2_2019"
-    ssl_support_method             = "sni-only"
-  }
+#   viewer_certificate {
+#     acm_certificate_arn            = aws_acm_certificate.cloud_resume.arn
+#     cloudfront_default_certificate = false
+#     minimum_protocol_version       = "TLSv1.2_2019"
+#     ssl_support_method             = "sni-only"
+#   }
 
-  depends_on =[
-    aws_acm_certificate_validation.cloud_resume
-  ]
-}
+#   depends_on =[
+#     aws_acm_certificate_validation.cloud_resume
+#   ]
+# }
 
 data "aws_route53_zone" "domain" {
   name = var.DOMAIN
