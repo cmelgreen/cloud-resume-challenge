@@ -29,6 +29,7 @@ class TestLambdaFunction(unittest.TestCase):
         from visitor_count import lambda_handler
 
         result = lambda_handler(None, None)
+        print(result)
 
         assert result['StatusCode'] == 200
 
