@@ -4,6 +4,28 @@ provider "aws" {
 
 resource "aws_s3_bucket" "cloud_resume" {
   bucket = "${var.PROJECT_OWNER}-${var.PROJECT_NAME}"
+
+  acl    = "public-read"
+  policy = <<POLICY
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "PublicReadGetObject",
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::${var.PROJECT_OWNER}-${var.PROJECT_NAME}/*"
+        }
+    ]
+}
+POLICY
+
+  website {
+    index_document = "index.html"
+    error_document = "error.html"
+  }
+
 }
 
 data "aws_acm_certificate" "issued" {
