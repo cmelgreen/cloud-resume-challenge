@@ -112,11 +112,7 @@ resource "aws_route53_record" "cloud_resume" {
   allow_overwrite = true
   type            = "CNAME"
   ttl             = "300"
-  records         = [aws_s3_bucket_website_configuration.cloud_resume.website_domain]
-}
-
-output "s3_endpoint" {
-  value = aws_s3_bucket_website_configuration.cloud_resume
+  records         = [aws_s3_bucket_website_configuration.cloud_resume.website_endpoint]
 }
 
 resource "aws_acm_certificate_validation" "cloud_resume" {
