@@ -4,7 +4,7 @@ import boto3
 import json
 
 
-def test_lambda_handler(self):
+def test_lambda_handler():
     with patch.object(boto3, 'resource') as mock_boto3_resource:
         mock_table = MagicMock()
         mock_boto3_resource.return_value = mock_table
