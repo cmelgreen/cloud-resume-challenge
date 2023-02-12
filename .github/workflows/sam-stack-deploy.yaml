@@ -21,17 +21,22 @@ jobs:
       with:
         path: ./terraform/project.auto.tfvars
 
+    - name: Check vars
+      run: |
+        echo ${{ steps.dotenv.outputs.PROJECT_NAME }}
+        echo ${{ steps.dotenv.outputs.AWS_REGION }}
+
+    - name: Assume AWS Role
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ steps.dotenv.outputs.PROJECT_NAME }}
+        aws-region: ${{ steps.dotenv.outputs.AWS_REGION }}
+
     - name: Setup Python
       uses: actions/setup-python@v2
 
     - name: Setup SAM
       uses: aws-actions/setup-sam@v1
-
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ steps.dotenv.outputs.AWS_REGION }}
-        aws-region: ${{ steps.dotenv.outputs.AWS_REGION }}
 
     - name: Build SAM stack
       run: sam build --use-container
