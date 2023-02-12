@@ -94,7 +94,7 @@ resource "aws_iam_role_policy_attachment" "cloud_resume_cloudformation" {
   policy_arn = data.aws_iam_policy.cloudformation_full_access.arn
 }
 
-resource "aws_iam_role_policy_attachment" "cloud_resume_lambda" {
+resource "aws_iam_role_policy_attachment" "cloud_resume_cloudfront" {
   role       = aws_iam_role.cloud_resume_github_actions.name
   policy_arn = data.aws_iam_policy.cloudfront_full_access.arn
 }
