@@ -3,24 +3,28 @@ from mock import patch, MagicMock
 import boto3
 import json
 
-class TestLambdaHandler(unittest.TestCase):
 
+class TestLambdaHandler(unittest.TestCase):
     def test_lambda_handler(self):
         with patch.object(boto3, 'resource') as mock_boto3_resource:
+
             mock_table = MagicMock()
             mock_boto3_resource.return_value = mock_table
 
-            mock_response = {
+            mock_response = '''{
                 'Attributes': {
                     'visitorCount': 5
                 }
-            }
+            }'''
+
             mock_table.update_item.return_value = mock_response
 
             from visitor_count import lambda_handler
 
             response = lambda_handler(None, None)
-            
+
+            mock_response = '{"Attributes": {"visitorCount": 5}}'
+
             self.assertEqual(response['statusCode'], 200)
             self.assertEqual(json.loads(response['body']), 5)
 
@@ -34,6 +38,7 @@ class TestLambdaHandler(unittest.TestCase):
                 },
                 ReturnValues='UPDATED_NEW'
             )
+
 
 if __name__ == '__main__':
     unittest.main()
