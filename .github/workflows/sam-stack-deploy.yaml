@@ -5,10 +5,16 @@ on:
       - .github/workflows/sam-stack-deploy.yaml
 
 jobs:
-  build-deploy:        
+  build-deploy:      
+    name: Deploy SAM Stack  
     runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write
+      contents: read
+
     steps:
-    - name: Checkout code
+    - name: Checkout
       uses: actions/checkout@v2
       
     - name: Get Environment Variables
@@ -17,18 +23,12 @@ jobs:
       with:
         path: ./terraform/project.auto.tfvars
 
-    - name: Check vars
-      run: |
-        echo ${{ steps.dotenv.outputs.PROJECT_NAME }}
-        echo ${{ steps.dotenv.outputs.AWS_REGION }}
-
     - name: Assume AWS Role
       uses: aws-actions/configure-aws-credentials@v1
       with:
         role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ steps.dotenv.outputs.PROJECT_NAME }}
         aws-region: ${{ steps.dotenv.outputs.AWS_REGION }}
       
-
     - name: Setup Python
       uses: actions/setup-python@v2
 
