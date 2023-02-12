@@ -2,7 +2,7 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 
 Parameters:
-  CERTIFICATE_ARN:
+  CertificateArn:
     Type: String
     Description: ARN of the certificate for the API Gateway Custom Domain
 
@@ -55,7 +55,7 @@ Resources:
     Type: AWS::ApiGateway::DomainName
     Properties:
       DomainName: !Ref "AWS::DomainName"
-      CertificateArn: !Ref CERTIFICATE_ARN
+      CertificateArn: !Ref CertificateArn
       EndpointConfiguration:
         Types:
           - REGIONAL
