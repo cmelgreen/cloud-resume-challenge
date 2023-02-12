@@ -51,7 +51,7 @@ Resources:
                 httpMethod: POST
                 uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${VisitorCountFunction.Arn}/invocations"
 
-  DomainConfiguration:
+  CustomDomain:
     Type: AWS::ApiGateway::DomainName
     Properties:
       DomainName: "cloud-resume-api.cmelgreen.com"
