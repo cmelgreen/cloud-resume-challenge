@@ -6,7 +6,7 @@ resource "aws_s3_bucket" "cloud_resume" {
   bucket = "${var.TF}-${var.PROJECT_NAME}"
 }
 
-resource "aws_cloudfront_distribution" {
+module "aws_cloudfront_distribution" {
   source              = "terraform-aws-modules/cloudfront/aws"
   origin_id           = aws_s3_bucket.cloud_resume.name
   origin_domain_name  = aws_s3_bucket.cloud_resume.bucket_domain_name
