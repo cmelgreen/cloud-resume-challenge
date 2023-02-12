@@ -36,32 +36,35 @@
           <li>Hey, I built this in one day!</li>
         </ul>
       </section>
+    </section>
+      <h3 id="visitor-count">
+        <script>
+          const visitorCountDisplay = document.getElementById("visitor-count");
+          
+          // Function to make GET request to API endpoint to retrieve number of visitors
+          function getVisitorCount() {
+            // API endpoint URL
+            const apiUrl = "https://cloud-resume-api.cmelgreen.com/visitor-count";
+          
+            // Make GET request to API endpoint
+            fetch(apiUrl)
+              .then(response => response.json())
+              .then(data => {
+                // Update visitor count display with retrieved number of visitors
+                visitorCountDisplay.innerHTML = `Visitor Count: ${data.visitorCount}`;
+              })
+              .catch(error => {
+                // Handle any errors
+                console.error(error);
+                visitorCountDisplay.innerHTML = "Error retrieving visitor count";
+              });
+          }
+          </script>
+          </h3>
+        </section>
     </main>
   </body>
   <footer>
-    <h3 id="visitor-count">
-    <script>
-      const visitorCountDisplay = document.getElementById("visitor-count");
-      
-      // Function to make GET request to API endpoint to retrieve number of visitors
-      function getVisitorCount() {
-        // API endpoint URL
-        const apiUrl = "https://cloud-resume-api.cmelgreen.com/visitor-count";
-      
-        // Make GET request to API endpoint
-        fetch(apiUrl)
-          .then(response => response.json())
-          .then(data => {
-            // Update visitor count display with retrieved number of visitors
-            visitorCountDisplay.innerHTML = `Visitor Count: ${data.visitorCount}`;
-          })
-          .catch(error => {
-            // Handle any errors
-            console.error(error);
-            visitorCountDisplay.innerHTML = "Error retrieving visitor count";
-          });
-      }
-      </script>
-      </h3>
+
   </footer>
 </html>
