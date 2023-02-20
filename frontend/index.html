@@ -40,6 +40,10 @@
       <h3 id="visitor-count">
         <script>
           const visitorCountDisplay = document.getElementById("visitor-count");
+
+          console.log(
+            "cloud resume challenge script running"
+          )
           
           // Function to make GET request to API endpoint to retrieve number of visitors
           function getVisitorCount() {
@@ -59,6 +63,9 @@
                 visitorCountDisplay.innerHTML = "Error retrieving visitor count";
               });
           }
+
+          getVisitorCount()
+          
           </script>
           </h3>
         </section>
