@@ -53,7 +53,7 @@ Resources:
         BasePath:
         - visitor-count
       Cors:
-        AllowOrigin: "cloud-resume.cmelgreen.com"
+        AllowOrigin: "'cloud-resume.cmelgreen.com'"
       DefinitionBody:
         swagger: '2.0'
         paths:
