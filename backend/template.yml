@@ -54,6 +54,7 @@ Resources:
         - visitor-count
       Cors:
         AllowOrigin: "'cloud-resume.cmelgreen.com'"
+        AllowHeaders: "'Access-Control-Allow-Origin'"
       DefinitionBody:
         swagger: '2.0'
         paths:
