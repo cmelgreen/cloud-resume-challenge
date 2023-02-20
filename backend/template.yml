@@ -58,10 +58,10 @@ Resources:
     Properties:
       DomainName: "cloud-resume-api.cmelgreen.com"
       CertificateArn: !Ref CertificateArn
-      Route53:
-         HostedZoneId: Z096097110UUK1O99V34J
-         EvaluateTargetHealth: false
-         DistributionDomainName: "cloud-resume-api.cmelgreen.com"
+      # Route53:
+      #    HostedZoneId: Z096097110UUK1O99V34J
+      #    EvaluateTargetHealth: false
+      #    DistributionDomainName: "cloud-resume-api.cmelgreen.com"
 
   BasePathMapping:
     Type: AWS::ApiGateway::BasePathMapping
