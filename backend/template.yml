@@ -36,6 +36,8 @@ Resources:
           Properties:
             Path: /visitor-count
             Method: get
+      Policies:
+      - AmazonDynamoDBFullAccess
 
   VisitorCountAPI:
     Type: AWS::Serverless::Api
