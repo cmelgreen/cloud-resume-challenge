@@ -67,5 +67,5 @@ jobs:
 
     - name: Deploy SAM stack
       working-directory: ./backend
-      run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --resolve-s3 --parameter-overrides ParameterKey=CERTIFICATE_ARN ParameterValue=${{ secrets.CERTIFICATE_ARN }} --stack-name ${{ steps.dotenv.outputs.PROJECT_NAME }} --region ${{ steps.dotenv.outputs.AWS_REGION }} 
+      run: sam deploy --no-confirm-changeset --no-fail-on-empty-changeset --on-failure DELETE --resolve-s3 --capabilities CAPABILITY_IAM --parameter-overrides CertificateArn=${{ secrets.CERTIFICATE_ARN }} --stack-name ${{ steps.dotenv.outputs.PROJECT_NAME }} --region ${{ steps.dotenv.outputs.AWS_REGION }} 
 

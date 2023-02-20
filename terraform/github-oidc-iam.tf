@@ -55,6 +55,10 @@ data "aws_iam_policy" "cloudformation_full_access" {
   name = "AWSCloudFormationFullAccess"
 }
 
+data "aws_iam_policy" "cloudfront_full_access" {
+  name = "CloudFrontFullAccess"
+}
+
 resource "aws_iam_role_policy_attachment" "cloud_resume_lambda" {
   role       = aws_iam_role.cloud_resume_github_actions.name
   policy_arn = data.aws_iam_policy.lambda_full_access.arn
@@ -89,3 +93,9 @@ resource "aws_iam_role_policy_attachment" "cloud_resume_cloudformation" {
   role       = aws_iam_role.cloud_resume_github_actions.name
   policy_arn = data.aws_iam_policy.cloudformation_full_access.arn
 }
+
+resource "aws_iam_role_policy_attachment" "cloud_resume_cloudfront" {
+  role       = aws_iam_role.cloud_resume_github_actions.name
+  policy_arn = data.aws_iam_policy.cloudfront_full_access.arn
+}
+

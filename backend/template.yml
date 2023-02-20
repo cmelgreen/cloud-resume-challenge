@@ -2,7 +2,7 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 
 Parameters:
-  CERTIFICATE_ARN:
+  CertificateArn:
     Type: String
     Description: ARN of the certificate for the API Gateway Custom Domain
 
@@ -12,7 +12,7 @@ Resources:
     Properties:
       TableName: visitorCount
       AttributeDefinitions:
-        - AttributeName: visitorCount
+        - AttributeName: id
           AttributeType: N
       KeySchema:
         - AttributeName: id
@@ -54,20 +54,21 @@ Resources:
   CustomDomain:
     Type: AWS::ApiGateway::DomainName
     Properties:
-      DomainName: !Ref "AWS::DomainName"
-      CertificateArn: !Ref CERTIFICATE_ARN
-      EndpointConfiguration:
-        Types:
-          - REGIONAL
+      DomainName: "cloud-resume-api.cmelgreen.com"
+      CertificateArn: !Ref CertificateArn
+      Route53:
+         HostedZoneId: Z096097110UUK1O99V34J
+         EvaluateTargetHealth: false
+         DistributionDomainName: "cloud-resume-api.cmelgreen.com"
 
   BasePathMapping:
     Type: AWS::ApiGateway::BasePathMapping
     Properties:
       DomainName: !Ref CustomDomain
       RestApiId: !Ref VisitorCountAPI
-      Stage: !Ref "AWS::Stage"
+      Stage: prod
 
 Outputs:
   APIURL:
     Description: URL of the API Gateway
-    Value: !Sub "https://${CustomDomain}/${AWS::Stage}"
+    Value: !Sub "https://${CustomDomain}/prod"
