@@ -59,8 +59,3 @@ Resources:
                 type: aws_proxy
                 httpMethod: POST
                 uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${VisitorCountFunction.Arn}/invocations"
-
-Outputs:
-  APIURL:
-    Description: URL of the API Gateway
-    Value: !Sub "https://${CustomDomain}/prod"
