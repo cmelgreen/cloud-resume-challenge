@@ -43,6 +43,13 @@ Resources:
     Type: AWS::Serverless::Api
     Properties:
       StageName: prod
+      Domain:
+        DomainName: "cloud-resume-api.cmelgreen.com"
+        CertificateArn: !Ref CertificateArn
+        Route53:
+          HostedZoneId: Z096097110UUK1O99V34J
+          EvaluateTargetHealth: false
+          DistributionDomainName: "cloud-resume-api.cmelgreen.com"
       DefinitionBody:
         swagger: '2.0'
         paths:
@@ -52,16 +59,6 @@ Resources:
                 type: aws_proxy
                 httpMethod: POST
                 uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${VisitorCountFunction.Arn}/invocations"
-
-  CustomDomain:
-    Type: AWS::ApiGateway::DomainName
-    Properties:
-      DomainName: "cloud-resume-api.cmelgreen.com"
-      CertificateArn: !Ref CertificateArn
-      # Route53:
-      #    HostedZoneId: Z096097110UUK1O99V34J
-      #    EvaluateTargetHealth: false
-      #    DistributionDomainName: "cloud-resume-api.cmelgreen.com"
 
   BasePathMapping:
     Type: AWS::ApiGateway::BasePathMapping
