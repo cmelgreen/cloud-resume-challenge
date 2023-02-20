@@ -47,7 +47,7 @@ Resources:
         DomainName: "cloud-resume-api.cmelgreen.com"
         CertificateArn: !Ref CertificateArn
         Route53:
-          HostedZoneName: "cmelgreen.com"
+          HostedZoneName: "Z096097110UUK1O99V34J"
           EvaluateTargetHealth: false
           DistributionDomainName: "cloud-resume-api.cmelgreen.com"
         BasePath:
