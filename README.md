@@ -1,1 +1,1 @@
-My stab at the Cloud Resume Challenge
+My stab at the Cloud Resume Challenge. View it live at cloud-resume.cmelgreen.com
