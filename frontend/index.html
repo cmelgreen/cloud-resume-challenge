@@ -39,23 +39,24 @@
     </section>
       <h3 id="visitor-count">
         <script>
-          const visitorCountDisplay = document.getElementById("visitor-count");
-
-          console.log(
-            "cloud resume challenge script running"
-          )
+          console.log("cloud resume challenge script running")
           
           // Function to make GET request to API endpoint to retrieve number of visitors
-          function getVisitorCount() {
+          const getVisitorCount = () => {
+            console.log("visitorCountDisplay running")
+            
             // API endpoint URL
             const apiUrl = "https://cloud-resume-api.cmelgreen.com/visitor-count";
+            const visitorCountDisplay = document.getElementById("visitor-count");
           
             // Make GET request to API endpoint
             fetch(apiUrl)
               .then(response => response.json())
               .then(data => {
+                console.log("response:", data)
                 // Update visitor count display with retrieved number of visitors
                 visitorCountDisplay.innerHTML = `Visitor Count: ${data.visitorCount}`;
+
               })
               .catch(error => {
                 // Handle any errors
@@ -65,7 +66,7 @@
           }
 
           getVisitorCount()
-          
+
           </script>
           </h3>
         </section>
