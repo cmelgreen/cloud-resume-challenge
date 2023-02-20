@@ -51,12 +51,14 @@
           
             // Make GET request to API endpoint
             fetch(apiUrl)
-              .then(response => response.json())
+              .then(response => {
+                console.log(response)
+                return response.json()
+              })
               .then(data => {
                 console.log("response:", data)
                 // Update visitor count display with retrieved number of visitors
                 visitorCountDisplay.innerHTML = `Visitor Count: ${data.visitorCount}`;
-
               })
               .catch(error => {
                 // Handle any errors
