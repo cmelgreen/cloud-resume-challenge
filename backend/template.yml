@@ -60,13 +60,6 @@ Resources:
                 httpMethod: POST
                 uri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${VisitorCountFunction.Arn}/invocations"
 
-  BasePathMapping:
-    Type: AWS::ApiGateway::BasePathMapping
-    Properties:
-      DomainName: !Ref CustomDomain
-      RestApiId: !Ref VisitorCountAPI
-      Stage: prod
-
 Outputs:
   APIURL:
     Description: URL of the API Gateway
