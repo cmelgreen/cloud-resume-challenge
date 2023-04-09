@@ -27,75 +27,27 @@ resource "aws_iam_role" "cloud_resume_github_actions" {
   })
 }
 
-data "aws_iam_policy" "lambda_full_access" {
-  name = "AWSLambda_FullAccess"
+locals {
+  policy_names = {
+    lambda        = "AWSLambda_FullAccess"
+    iam           = "IAMFullAccess"
+    apigateway    = "AmazonAPIGatewayAdministrator"
+    s3            = "AmazonS3FullAccess"
+    dynamodb      = "AmazonDynamoDBFullAccess"
+    route53       = "AmazonRoute53FullAccess"
+    cloudformation = "AWSCloudFormationFullAccess"
+    cloudfront    = "CloudFrontFullAccess"
+  }
 }
 
-data "aws_iam_policy" "iam_full_access" {
-  name = "IAMFullAccess"
+data "aws_iam_policy" "policies" {
+  for_each = local.policy_names
+  name     = each.value
 }
 
-data "aws_iam_policy" "apigateway_full_access" {
-  name = "AmazonAPIGatewayAdministrator"
-}
-
-data "aws_iam_policy" "s3_full_access" {
-  name = "AmazonS3FullAccess"
-}
-
-data "aws_iam_policy" "dynamodb_full_access" {
-  name = "AmazonDynamoDBFullAccess"
-}
-
-data "aws_iam_policy" "route53_full_access" {
-  name = "AmazonRoute53FullAccess"
-}
-
-data "aws_iam_policy" "cloudformation_full_access" {
-  name = "AWSCloudFormationFullAccess"
-}
-
-data "aws_iam_policy" "cloudfront_full_access" {
-  name = "CloudFrontFullAccess"
-}
-
-resource "aws_iam_role_policy_attachment" "cloud_resume_lambda" {
+resource "aws_iam_role_policy_attachment" "cloud_resume" {
+  for_each   = data.aws_iam_policy.policies
   role       = aws_iam_role.cloud_resume_github_actions.name
-  policy_arn = data.aws_iam_policy.lambda_full_access.arn
-}
-
-resource "aws_iam_role_policy_attachment" "cloud_resume_iam" {
-  role       = aws_iam_role.cloud_resume_github_actions.name
-  policy_arn = data.aws_iam_policy.iam_full_access.arn
-}
-
-resource "aws_iam_role_policy_attachment" "cloud_resume_apigateway" {
-  role       = aws_iam_role.cloud_resume_github_actions.name
-  policy_arn = data.aws_iam_policy.apigateway_full_access.arn
-}
-
-resource "aws_iam_role_policy_attachment" "cloud_resume_s3" {
-  role       = aws_iam_role.cloud_resume_github_actions.name
-  policy_arn = data.aws_iam_policy.s3_full_access.arn
-}
-
-resource "aws_iam_role_policy_attachment" "cloud_resume_dynamodb" {
-  role       = aws_iam_role.cloud_resume_github_actions.name
-  policy_arn = data.aws_iam_policy.dynamodb_full_access.arn
-}
-
-resource "aws_iam_role_policy_attachment" "cloud_resume_route53" {
-  role       = aws_iam_role.cloud_resume_github_actions.name
-  policy_arn = data.aws_iam_policy.route53_full_access.arn
-}
-
-resource "aws_iam_role_policy_attachment" "cloud_resume_cloudformation" {
-  role       = aws_iam_role.cloud_resume_github_actions.name
-  policy_arn = data.aws_iam_policy.cloudformation_full_access.arn
-}
-
-resource "aws_iam_role_policy_attachment" "cloud_resume_cloudfront" {
-  role       = aws_iam_role.cloud_resume_github_actions.name
-  policy_arn = data.aws_iam_policy.cloudfront_full_access.arn
+  policy_arn = each.value.arn
 }
 
